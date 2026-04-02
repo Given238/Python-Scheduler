@@ -35,17 +35,39 @@ def main():
 
         if choice == '1':
             task = input("Enter the task:")
-            data["tasks"].append(task)
+            task_date = input("Enter date and time for the task:")
+            task_duration = input("Enter duration for the task:")
+            task_description = input("Enter a description for the task:")
+            data["tasks"].append({
+                "name": task,
+                "date": task_date,
+                "duration": task_duration,
+                "description": task_description
+            })
             print(f"Task '{task}' added successfully!")
             save_data(data)
         elif choice == '2':
             event = input("Enter the event:")
-            data["events"].append(event)
+            event_date = input("Enter date and time for event:")
+            event_location = input("Enter location for event:")
+            event_duration = input("Enter duration for event:")
+            event_description = input("Enter a description for the event:")
+            data["events"].append({
+                "name": event,
+                "date": event_date,
+                "location": event_location,
+                "duration": event_duration,
+                "description": event_description
+            })
             print(f"Event '{event}' added successfully!")
             save_data(data)
         elif choice == '3':
             reminder = input("Enter the reminder:")
-            data["reminders"].append(reminder)
+            reminder_deadline = input("Enter deadline for the reminder:")
+            data["reminders"].append({
+                "name": reminder,
+                "deadline": reminder_deadline,
+            })
             print(f"Reminder '{reminder}' added successfully!")
             save_data(data)
         elif choice == '4':
@@ -55,7 +77,19 @@ def main():
                     print("No items found.")
                 else:
                     for item in data[category]:
-                        print(f"- {item}")
+                        if not isinstance(item, dict):
+                            print(f"- Invalid {category[:-1]} entry: {item}")
+                            continue
+
+                        if category == "tasks":
+                            print(
+                                f"- Task: {item.get('name', 'N/A')}\n  Date/Time: {item.get('date', 'N/A')}\n  Duration: {item.get('duration', 'N/A')}\n  Description: {item.get('description', 'N/A')}")
+                        elif category == "events":
+                            print(
+                                f"- Event: {item.get('name', 'N/A')}\n  Date/Time: {item.get('date', 'N/A')}\n  Location: {item.get('location', 'N/A')}\n  Duration: {item.get('duration', 'N/A')}\n  Description: {item.get('description', 'N/A')}")
+                        elif category == "reminders":
+                            print(
+                                f"- Reminder: {item.get('name', 'N/A')}\n  Deadline: {item.get('deadline', 'N/A')}")
         elif choice == '5':
             print("Exiting the application. Goodbye!")
             break
@@ -63,7 +97,8 @@ def main():
             print("Invalid choice. Please try again.")
         save_data(data)
 
-        # Note for tomorrow: add details to tasks, events, and reminders.
+        # Note for tomorrow: add details to tasks, events, and reminders. (done 2026-04-02)
+        # Next, add error handling for invalid inputs and ensure that the application can handle edge cases gracefully.
 
 
 if __name__ == "__main__":

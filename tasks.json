@@ -1,9 +1,24 @@
 {
     "tasks": [
-        "2"
+        {
+            "name": " walk dog",
+            "date": " 17 August 2026, 03:00 A.M",
+            "duration": " 30 minutes",
+            "description": " Walk My dog until he poops"
+        },
+        {
+            "name": " CP",
+            "date": " tomorrow, 7 pm",
+            "duration": " 2 hours",
+            "description": " grind and dont touch grass ever"
+        },
+        {
+            "name": " 2",
+            "date": " 2",
+            "duration": " 2",
+            "description": " 2"
+        }
     ],
     "events": [],
-    "reminders": [
-        "4"
-    ]
+    "reminders": []
 }
