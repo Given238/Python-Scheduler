@@ -9,6 +9,13 @@ from datetime import datetime, timedelta
 # prompt_duration: prompt the user to enter a duration
 # prompt_deadline: prompt the user to enter a deadline
 
+def create_empty_week_schedule():
+    days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    week_schedule = {day: {f"{hour:02d}:00" : None for hour in range(24)} for day in days}
+    return week_schedule
+
+
+
 def prompt_non_empty(prompt):
     while True:
         value = input(prompt).strip()
@@ -100,6 +107,9 @@ def show_menu():
 def main():
     # Load existing data or initialize new data (tasks, events, reminders) from the JSON file (step 1)
     data = load_data()
+    if not data("week_schedule"):
+        data["week_schedule"] = create_empty_week_schedule()
+    
     while True:
         show_menu()
         choice = input("Enter your choice:").strip()

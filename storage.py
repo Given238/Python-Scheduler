@@ -16,7 +16,8 @@ def load_data():
         return {
             "tasks": [],
             "events": [],
-            "reminders": []
+            "reminders": [],
+            "week_schedule": create_empty_week_schedule(),
         }
     except json.JSONDecodeError:
         # Incomplete/corrupt save (e.g. crash mid-write). Keep the bad file for inspection.
@@ -32,5 +33,6 @@ def load_data():
         return {
             "tasks": [],
             "events": [],
-            "reminders": []
+            "reminders": [],
+            "week_schedule": create_empty_week_schedule(),
         }
