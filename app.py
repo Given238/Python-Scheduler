@@ -1,5 +1,6 @@
 from storage import save_data, load_data
 from datetime import datetime, timedelta
+from storage import create_empty_week_schedule
 
 
 # L7 - L76: functions for validating user input/error handling
@@ -8,12 +9,6 @@ from datetime import datetime, timedelta
 # prompt_date: prompt the user to enter a date and time
 # prompt_duration: prompt the user to enter a duration
 # prompt_deadline: prompt the user to enter a deadline
-
-def create_empty_week_schedule():
-    days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-    week_schedule = {day: {f"{hour:02d}:00" : None for hour in range(24)} for day in days}
-    return week_schedule
-
 
 
 def prompt_non_empty(prompt):
@@ -107,12 +102,18 @@ def show_menu():
 def main():
     # Load existing data or initialize new data (tasks, events, reminders) from the JSON file (step 1)
     data = load_data()
-    if not data("week_schedule"):
+    for key in ["tasks", "events", "reminders"]:
+        if key not in data:
+            data[key] = []
+
+    if "week_schedule" not in data:
         data["week_schedule"] = create_empty_week_schedule()
-    
+        save_data(data)
+
     while True:
         show_menu()
         choice = input("Enter your choice:").strip()
+        data_changed = False
 
         if choice == '1':
             task = prompt_non_empty("Enter the task:")
@@ -127,7 +128,7 @@ def main():
                 "description": task_description
             })
             print(f"Task '{task}' added successfully!")
-            save_data(data)
+            data_changed = True
         elif choice == '2':
             event = prompt_non_empty("Enter the event:")
             event_date = prompt_date("Enter date and time for event:")
@@ -143,7 +144,7 @@ def main():
                 "description": event_description
             })
             print(f"Event '{event}' added successfully!")
-            save_data(data)
+            data_changed = True
         elif choice == '3':
             reminder = prompt_non_empty("Enter the reminder:")
             reminder_deadline = prompt_deadline(
@@ -153,7 +154,7 @@ def main():
                 "deadline": _to_json_value(reminder_deadline),
             })
             print(f"Reminder '{reminder}' added successfully!")
-            save_data(data)
+            data_changed = True
         elif choice == '4':
             for category in ["tasks", "events", "reminders"]:
                 print(f"\n{category.capitalize()}:")
@@ -179,15 +180,15 @@ def main():
             break
         else:
             print("Invalid choice. Please try again.")
-        save_data(data)
+        if data_changed:
+            save_data(data)
 
         # Personal notes(Given):
 
         # Note for tomorrow: add details to tasks, events, and reminders. (done 2026-04-02)
         # Next, add error handling for invalid inputs and ensure that the application can handle edge cases gracefully.(done 2026-04-05)
-        # Finally, make code more realable, handle storage better (e.g. handle incomplete/corrupt saves, do not crash if tasks.json is invalid, etc.)
-        # Then, Move on to next step, expand functionality (e.g. editing/deleting tasks, events, reminders; adding categories/tags; etc.) -> CRUD operations for tasks/events/reminders, categories/tags, etc.
-        # Then, your project is basically done! You can stop here or add more features as you like (e.g. notifications, recurring tasks/events/reminders, etc.). You can also improve the user interface (e.g. add colors, formatting, etc.) if you want to.
+        # Finally, make code more realable, handle storage better (e.g. handle incomplete/corrupt saves, do not crash if tasks.json is invalid, etc.) -> done 2026-04-06
+        # add weekly schedule feature -> still not done -> add ability to view/edit weekly schedule, and save it to JSON, add user input for days.
 
 
 if __name__ == "__main__":

@@ -2,6 +2,14 @@ import json
 from pathlib import Path
 
 
+def create_empty_week_schedule():
+    days = ["Monday", "Tuesday", "Wednesday",
+            "Thursday", "Friday", "Saturday", "Sunday"]
+    week_schedule = {
+        day: {f"{hour:02d}:00": None for hour in range(24)} for day in days}
+    return week_schedule
+
+
 def save_data(data):
     with open("tasks.json", "w", encoding="utf-8") as file:
         json.dump(data, file, indent=4)
